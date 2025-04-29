@@ -1,50 +1,50 @@
-import express from "express"
-import mongoose from "mongoose"
-import dotenv from "dotenv"
-import cookieParser from "cookie-parser"
-import cors from "cors"
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import authRouter from "./routes/auth.route.js";
+import noteRouter from "./routes/note.route.js";
 
-dotenv.config()
+dotenv.config();
 
-mongoose
-  .connect("mongodb+srv://deeptiranjan:MQUcPzgsR0pWdn0g@cluster1.mswab1f.mongodb.net/GoodNotes")
-  .then(() => {
-    console.log("Connected to mongoDB")
-  })
-  .catch((err) => {
-    console.log(err)
-  })
+const app = express();
 
-const app = express()
+// Middleware
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors({
+  origin: true,
+  credentials: true
+}));
 
-// to make input as json
-app.use(express.json())
-app.use(cookieParser())
-app.use(cors({ origin: ["http://localhost:5173"], credentials: true }))
+// Connect to MongoDB
+mongoose.connect(process.env.MONGO_URL)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.error(err));
 
-app.listen(process.env.PORT || 3000 , () => {
-  console.log(`Server is running on port ${process.env.PORT}`)
-})
-
+// Routes
 app.get("/", (req, res) => {
   res.send("API is running 🚀");
 });
 
-// import routes
-import authRouter from "./routes/auth.route.js"
-import noteRouter from "./routes/note.route.js"
+app.use("/api/auth", authRouter);
+app.use("/api/note", noteRouter);
 
-app.use("/api/auth", authRouter)
-app.use("/api/note", noteRouter)
-
-// error handling
+// Error handling
 app.use((err, req, res, next) => {
-  const statusCode = err.statusCode || 500
-  const message = err.message || "Internal Serer Error"
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
 
   return res.status(statusCode).json({
     success: false,
     statusCode,
     message,
-  })
-})
+  });
+});
+
+// Start server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
+});
