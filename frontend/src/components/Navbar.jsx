@@ -10,6 +10,7 @@ import {
   signoutStart,
 } from "../redux/user/userSlice"
 import axios from "axios"
+import {BASE_URL_AUTH} from "../link.js"
 
 const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
   const [searchQuery, setSearchQuery] = useState("")
@@ -32,7 +33,7 @@ const Navbar = ({ userInfo, onSearchNote, handleClearSearch }) => {
     try {
       dispatch(signoutStart())
 
-      const res = await axios.get("http://localhost:3000/api/auth/signout", {
+      const res = await axios.get(BASE_URL_AUTH+"/signout", {
         withCredentials: true,
       })
 
