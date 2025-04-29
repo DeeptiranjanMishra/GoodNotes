@@ -7,7 +7,7 @@ import cors from "cors"
 dotenv.config()
 
 mongoose
-  .connect("mongodb://localhost:27017/Notes")
+  .connect("mongodb+srv://deeptiranjan:MQUcPzgsR0pWdn0g@cluster1.mswab1f.mongodb.net/GoodNotes")
   .then(() => {
     console.log("Connected to mongoDB")
   })
