@@ -26,6 +26,10 @@ app.listen(process.env.PORT , () => {
   console.log(`Server is running on port ${process.env.PORT}`)
 })
 
+app.get("/", (req, res) => {
+  res.send("API is running 🚀");
+});
+
 // import routes
 import authRouter from "./routes/auth.route.js"
 import noteRouter from "./routes/note.route.js"
