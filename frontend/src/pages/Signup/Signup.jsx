@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { validateEmail } from "../../utils/helper"
 import axios from "axios"
 import { toast } from "react-toastify"
+import { BASE_URL_AUTH } from "../../link"
 
 const Signup = () => {
   const [name, setName] = useState("")
@@ -36,7 +37,7 @@ const Signup = () => {
     // sign up api
     try {
       const res = await axios.post(
-        "http://localhost:3000/api/auth/signup",
+        BASE_URL_AUTH+"/signup",
         { username: name, email, password },
         { withCredentials: true }
       )
